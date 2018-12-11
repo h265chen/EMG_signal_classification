@@ -259,11 +259,11 @@ def main():
     selected_features = featureSelection(extracted_dataframe)
     #plotRoc(extracted_dataframe, selected_features)
 
-    #Run classifiers
+    ###########Runs selected classifiers
     #RunNaiveBayes(extracted_dataframe, selected_features)
     #RunRandomForestClassifier(extracted_dataframe,selected_features )
     #RunSVMClassifier(extracted_dataframe,selected_features )
-    RunKNeighborsClassifier(extracted_dataframe,selected_features )
+    #RunKNeighborsClassifier(extracted_dataframe,selected_features )
     #knn_combined_performance(extracted_dataframe,selected_features)
 
 
