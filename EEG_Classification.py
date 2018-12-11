@@ -206,7 +206,7 @@ def combineClass(dataFrame):
 def knn_combined_performance(dataFrame, selected_features):
     X = dataFrame[selected_features]
     Y = combineClass(dataFrame)
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3)
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
     clf = KNeighborsClassifier(n_neighbors = 17)
     clf.fit(X_train,y_train)
     y_pred = clf.predict(X_test)
@@ -219,7 +219,7 @@ def knn_combined_performance(dataFrame, selected_features):
 
     Y = label_binarize(Y,classes =[1,2,3])
     n_class = Y.shape[1]
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=.3)
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=.2)
     classifier = OneVsRestClassifier(KNeighborsClassifier(n_neighbors = 12))
     y_score = classifier.fit(X_train, y_train).predict_proba(X_test)
     fpr = dict()
@@ -259,7 +259,7 @@ def main():
     selected_features = featureSelection(extracted_dataframe)
     #plotRoc(extracted_dataframe, selected_features)
 
-    ###########Runs selected classifiers
+    #
     #RunNaiveBayes(extracted_dataframe, selected_features)
     #RunRandomForestClassifier(extracted_dataframe,selected_features )
     #RunSVMClassifier(extracted_dataframe,selected_features )
