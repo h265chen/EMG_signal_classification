@@ -173,6 +173,7 @@ def plotRoc(data, selected_features):
     plt.title('Receiver operating characteristic for KNN')
     plt.legend(loc="lower right")
     plt.show()
+
 def featureExtraction(dataFrame):
     array = dataFrame.values
     X = array[:, 0:178]
@@ -254,12 +255,16 @@ def main():
     dataFrame = dataFrame.set_index('index')
     headers = list(dataFrame.columns.values)
     headers.remove('y')
+
+    #Preprocessing step
     #lowPassFilter(dataFrame)
+    #Performs Feature extraction
     extracted_dataframe = featureExtraction(dataFrame)
+    #Performs Features Selection
     selected_features = featureSelection(extracted_dataframe)
     #plotRoc(extracted_dataframe, selected_features)
 
-    #
+    #Classification and Validation Step
     #RunNaiveBayes(extracted_dataframe, selected_features)
     #RunRandomForestClassifier(extracted_dataframe,selected_features )
     #RunSVMClassifier(extracted_dataframe,selected_features )
