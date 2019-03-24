@@ -88,7 +88,7 @@ def RunKNeighborsClassifier(data,selected_features):
     print("Running KNeighbors Classifier")
     X = data[selected_features]
     Y = data['y']
-    X = standardization(X)
+    X = normalization(X)
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
     clf = KNeighborsClassifier(n_neighbors = 10)
     clf.fit(X_train,y_train)
@@ -268,7 +268,7 @@ def main():
     #RunNaiveBayes(extracted_dataframe, selected_features)
     #RunRandomForestClassifier(extracted_dataframe,selected_features )
     #RunSVMClassifier(extracted_dataframe,selected_features )
-    #RunKNeighborsClassifier(extracted_dataframe,selected_features )
+    RunKNeighborsClassifier(extracted_dataframe,selected_features )
     #knn_combined_performance(extracted_dataframe,selected_features)
 
 
