@@ -14,6 +14,8 @@ from sklearn import metrics
 from sklearn.preprocessing import label_binarize
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.preprocessing import StandardScaler
+import numpy as np
 
 # read text data as dataFrame
 def readtext(path):
@@ -51,7 +53,6 @@ def calRMS(subject, weight, trail, column, window_size, overlap):
     print(rms)
 
 def plotRMS(dataFrame):
-
     col_list = ['BB', 'TB', 'BR', 'AD', 'LES', 'TES']
     ms = 0
     window_beg = 0
@@ -92,8 +93,6 @@ def plotBoxData(df,df1,df2):
     plt.show()
 
 
-
-
 def runNaiveBayes(dataframe):
     X = dataframe[['BB', 'TB', 'BR', 'AD', 'LES', 'TES']]
     Y = dataframe['weight']
@@ -110,8 +109,50 @@ def runNaiveBayes(dataframe):
     print('fscore: {}'.format(fscore))
     print('support: {}'.format(support))
 
+def standardization(X_input):
+    scaler = StandardScaler()
+    StandardScaler(copy=True, with_mean=True, with_std=True)
+    np_scaled = scaler.fit(X_input)
+    normalized = scaler.transform(X_input)
+    return normalized
+
+def normalizeData(dataFrame, label):
+    print("Running Normalization")
+    col_list = ['BB', 'TB', 'BR', 'AD', 'LES', 'TES']
+    ms = 0
+    window_beg = 0
+    window_size = 200
+    overlap = 10
+    rms_normalized_df = pd.DataFrame()
+    plot_index = 0
+    rms_max = 0
+    for column_name in col_list:
+        col = dataFrame[column_name]
+        col_mean = col.mean()
+        rms_list = list()
+        label_list = list()
+        for window_beg in range(0,len(col)-window_size,overlap):
+            for i in range(window_beg, window_size+window_beg):
+                ms = ms + col[i]**2
+            ms = ms/window_size
+            x = math.sqrt(ms)
+            rms_list.append(x)
+        rms_max = max(rms_list)
+        rms_array = np.array(rms_list)
+        rms_normalized_df[column_name + '_normalized'] = rms_array/rms_max
+        plt.subplot(6, 1, plot_index + 1)
+        plt.title(column_name + '_normalized')
+        plt.ylabel('Normalized RMS value')
+        plt.plot(rms_normalized_df[column_name + '_normalized'])
+        plot_index= plot_index +1
+    plt.show()
+    rms_normalized_df['weight'] = label
+    print(rms_normalized_df)
+
+
+
 def createDFObjects():
-    print("Running classification")
+    print("Creating dataframe objects")
     subject = 1
     trial = 1
     weight = '2pt5kg'
@@ -137,13 +178,12 @@ def createDFObjects():
 
     frames = [df1, df2,df3]
     result = pd.concat(frames)
-    return result
+    return df1
 
 
 if __name__ == '__main__':
-
     df = createDFObjects()
-    print(df)
+    normalizeData(df,0)
     #df = readtext(address)
     #plotRMS(df)
     #plotRMS(df)
